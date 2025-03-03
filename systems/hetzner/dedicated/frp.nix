@@ -3,7 +3,7 @@
   #
   # From a client, use an SSH tunnel to connect to the server (for now, can migrate to TLS later).
   #
-  # ssh -L 7000:localhost:7000 adrian@65.109.61.232
+  # ssh -L 7000:localhost:7000 auser@65.109.61.232
   #
   # Then run the client:
   #

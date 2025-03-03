@@ -41,7 +41,7 @@
   sudo nixos-install --flake github:a-h/nixos#hetzner-dedicated-x86_64
 
 */
-{ system, inputs, pkgs, config, adrianSSHKey, rootSSHKey, ... }:
+{ system, inputs, pkgs, config, auserSSHKey, rootSSHKey, ... }:
 {
   nixpkgs = {
     overlays = (import ../../../overlays/default.nix {
@@ -144,7 +144,7 @@
   time.timeZone = "Europe/London";
   i18n.defaultLocale = "en_GB.UTF-8";
   console.keyMap = "us";
-  nix.settings.trusted-users = [ "adrian" "@wheel" ];
+  nix.settings.trusted-users = [ "auser" "@wheel" ];
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/nvme0n1";
@@ -158,11 +158,11 @@
 
   users.users = {
     root.hashedPassword = "!"; # Disable root login
-    adrian = {
+    auser = {
       isNormalUser = true;
       extraGroups = [ "wheel" "docker" ];
       openssh.authorizedKeys.keys = [
-        adrianSSHKey
+        auserSSHKey
         rootSSHKey
       ];
     };
@@ -195,7 +195,7 @@
     allowedTCPPorts = [
       22 # SSH
       80 # For ACME challenges
-      443 # HTTPS for cache.adrianhesketh.com
+      443 # HTTPS for cache.auserhesketh.com
     ];
   };
 
@@ -218,7 +218,7 @@
 
     # When adding a new host, don't force SSL until the certificate has been generated.
     # Enable web sockets for the Minio console.
-    virtualHosts."minio-console.adrianhesketh.com" = {
+    virtualHosts."minio-console.auserhesketh.com" = {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
@@ -230,7 +230,7 @@
         '';
       };
     };
-    virtualHosts."minio.adrianhesketh.com" = {
+    virtualHosts."minio.auserhesketh.com" = {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
@@ -251,8 +251,8 @@
   security.acme = {
     acceptTerms = true;
     certs = {
-      "minio-console.adrianhesketh.com".email = "acme@adrianhesketh.com";
-      "minio.adrianhesketh.com".email = "acme@adrianhesketh.com";
+      "minio-console.auserhesketh.com".email = "acme@auserhesketh.com";
+      "minio.auserhesketh.com".email = "acme@auserhesketh.com";
     };
   };
 

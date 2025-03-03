@@ -42,13 +42,13 @@ utmctl start aarch64
 Inputs: ACCESS_KEY, SECRET_KEY
 
 ```bash
-mc alias set minio-adrianhesketh-com https://minio.adrianhesketh.com $ACCESS_KEY $SECRET_KEY
+mc alias set minio-auserhesketh-com https://minio.auserhesketh.com $ACCESS_KEY $SECRET_KEY
 ```
 
 ### minio-nix-cache-bucket-create
 
 ```bash
-mc mb minio-adrianhesketh-com/nix-cache
+mc mb minio-auserhesketh-com/nix-cache
 ```
 
 ### minio-nix-cache-user-create
@@ -56,7 +56,7 @@ mc mb minio-adrianhesketh-com/nix-cache
 Inputs: ACCESS_KEY, SECRET_KEY
 
 ```bash
-mc admin user add minio-adrianhesketh-com $ACCESS_KEY $SECRET_KEY
+mc admin user add minio-auserhesketh-com $ACCESS_KEY $SECRET_KEY
 ```
 
 ### minio-nix-cache-create-read-write-user
@@ -65,10 +65,10 @@ Inputs: ACCESS_KEY
 
 ```bash
 # Create policy.
-mc admin policy create minio-adrianhesketh-com nix-cache-read-write-policy ./minio/nix-cache-read-write-policy.json
+mc admin policy create minio-auserhesketh-com nix-cache-read-write-policy ./minio/nix-cache-read-write-policy.json
 # Create group and attach policy.
-mc admin group add minio-adrianhesketh-com nix-cache-read-write $ACCESS_KEY
-mc admin policy attach minio-adrianhesketh-com nix-cache-read-write-policy --group=nix-cache-read-write
+mc admin group add minio-auserhesketh-com nix-cache-read-write $ACCESS_KEY
+mc admin policy attach minio-auserhesketh-com nix-cache-read-write-policy --group=nix-cache-read-write
 ```
 
 ### minio-nix-cache-create-read-user
@@ -77,10 +77,10 @@ Inputs: ACCESS_KEY
 
 ```bash
 # Create policy.
-mc admin policy create minio-adrianhesketh-com nix-cache-read-policy ./minio/nix-cache-read-policy.json
+mc admin policy create minio-auserhesketh-com nix-cache-read-policy ./minio/nix-cache-read-policy.json
 # Create group and attach policy.
-mc admin group add minio-adrianhesketh-com nix-cache-read $ACCESS_KEY
-mc admin policy attach minio-adrianhesketh-com nix-cache-read-policy --group=nix-cache-read
+mc admin group add minio-auserhesketh-com nix-cache-read $ACCESS_KEY
+mc admin policy attach minio-auserhesketh-com nix-cache-read-policy --group=nix-cache-read
 ```
 
 ### minio-nix-cache-setup-cli
@@ -91,14 +91,14 @@ To set up the AWS CLI to use your new MinIO server, you must configure the AWS C
 
 ```bash
 cat <<EOF > ~/.aws/config
-[profile minio-adrianhesketh-com]
+[profile minio-auserhesketh-com]
 region = us-east-1
 output = json
 # The endpoint is the URL of the MinIO server, but this is, sadly, ignored by the Nix tools, and you have to specify it in the store path.
-endpoint_url = https://minio.adrianhesketh.com
+endpoint_url = https://minio.auserhesketh.com
 EOF
 cat <<EOF > ~/.aws/credentials
-[minio-adrianhesketh-com]
+[minio-auserhesketh-com]
 aws_access_key_id=$ACCESS_KEY
 aws_secret_access_key=$SECRET_KEY
 EOF
@@ -109,19 +109,19 @@ EOF
 With the AWS CLI configured to use the MinIO server, you can list the buckets using the AWS CLI instead.
 
 ```bash
-aws s3 --profile minio-adrianhesketh-com ls
+aws s3 --profile minio-auserhesketh-com ls
 ```
 
 ### minio-nix-cache-list-bucket
 
 ```bash
-aws s3 --profile minio-adrianhesketh-com ls s3://nix-cache
+aws s3 --profile minio-auserhesketh-com ls s3://nix-cache
 ```
 
 ### minio-nix-cache-test-cp
 
 ```bash
-aws s3 --profile minio-adrianhesketh-com cp ./README.md s3://nix-cache/README.md
+aws s3 --profile minio-auserhesketh-com cp ./README.md s3://nix-cache/README.md
 ```
 
 ### minio-nix-cache-ping
@@ -129,7 +129,7 @@ aws s3 --profile minio-adrianhesketh-com cp ./README.md s3://nix-cache/README.md
 Add `-vvvv` for verbose output.
 
 ```bash
-nix store info --store 's3://nix-cache?profile=minio-adrianhesketh-com&endpoint=minio.adrianhesketh.com'
+nix store info --store 's3://nix-cache?profile=minio-auserhesketh-com&endpoint=minio.auserhesketh.com'
 ```
 
 ### minio-nix-cache-push
@@ -137,10 +137,10 @@ nix store info --store 's3://nix-cache?profile=minio-adrianhesketh-com&endpoint=
 Add `-vvvv` for verbose output.
 
 ```bash
-pass minio.adrianhesketh.com/nix-store-private-key.pem > ~/nix-store-private-key.pem
-nix copy --to 's3://nix-cache?profile=minio-adrianhesketh-com&endpoint=minio.adrianhesketh.com' .#devShells.x86_64-linux.default
-nix store sign -k ~/nix-store-private-key.pem --store 's3://nix-cache?profile=minio-adrianhesketh-com&endpoint=minio.adrianhesketh.com' .#devShells.x86_64-linux.default
+pass minio.auserhesketh.com/nix-store-private-key.pem > ~/nix-store-private-key.pem
+nix copy --to 's3://nix-cache?profile=minio-auserhesketh-com&endpoint=minio.auserhesketh.com' .#devShells.x86_64-linux.default
+nix store sign -k ~/nix-store-private-key.pem --store 's3://nix-cache?profile=minio-auserhesketh-com&endpoint=minio.auserhesketh.com' .#devShells.x86_64-linux.default
 ```
 
-It's also possible to copy `nix copy --to 's3://nix-cache?profile=minio-adrianhesketh-com&endpoint=minio.adrianhesketh.com' .#devShells.x86_64-linux.default` and then sign the store path.
+It's also possible to copy `nix copy --to 's3://nix-cache?profile=minio-auserhesketh-com&endpoint=minio.auserhesketh.com' .#devShells.x86_64-linux.default` and then sign the store path.
 ```
