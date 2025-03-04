@@ -8,25 +8,20 @@
     auto-optimise-store = true;
   };
 
-  environment.systemPackages = [
-    pkgs.vim
-    pkgs.git
-    pkgs.zip
-    pkgs.unzip
-    pkgs.wget
-  ];
-
+  # NixOS partition
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
     fsType = "ext4";
   };
 
+  # Boot partition
   fileSystems."/boot" = {
     device = "/dev/disk/by-label/boot";
     fsType = "vfat";
     options = [ "fmask=0022" "dmask=0022" ];
   };
 
+  # Swap partition
   swapDevices = [
     {
       device = "/dev/disk/by-label/swap";
@@ -60,12 +55,27 @@
     auser = {
       isNormalUser = true;
       extraGroups = [ "wheel" ];
+      initialPassword = "changeme";
       openssh.authorizedKeys.keys = [
         auserSSHKey
         rootSSHKey
       ];
     };
   };
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
+  environment.systemPackages = with pkgs; [
+    vim
+    git
+    zip
+    unzip
+    wget
+    curl
+    python3
+  ];
+
 
   security.sudo.wheelNeedsPassword = false;
 
