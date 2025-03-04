@@ -74,6 +74,10 @@
       KbdInteractiveAuthentication = false;
     };
   };
+  # VDAgent
+  services.qemuGuest.enable = true;
+  services.spice-vdagentd.enable = true;
+
   networking.firewall.allowedTCPPorts = [ 22 ];
 
   # This value determines the NixOS release from which the default
