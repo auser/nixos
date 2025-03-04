@@ -34,8 +34,8 @@
   ];
 
   documentation.nixos.enable = false;
-  time.timeZone = "Europe/London";
-  i18n.defaultLocale = "en_GB.UTF-8";
+  time.timeZone = "America/Los_Angeles";
+  i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";
   nix.settings.trusted-users = [ "auser" "@wheel" ];
   nix.settings.system-features = [ "kvm" "nixos-test" ];
