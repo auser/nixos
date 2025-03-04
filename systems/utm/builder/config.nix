@@ -1,7 +1,9 @@
 { pkgs, auserSSHKey, rootSSHKey, ... }:
 
 {
-  networking.hostName = "builder";
+  # Networking
+  networking.hostName = "devbox";
+  networking.networkmanager.enable = true;
 
   nix.settings = {
     experimental-features = "nix-command flakes";
