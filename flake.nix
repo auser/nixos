@@ -65,7 +65,7 @@
             rootSSHKey = rootSSHKey;
           };
           modules = [
-            ./systems/utm/builder/config.nix
+            ./systems/utm/builder/config.nix inputs
           ];
         };
         builder-aarch64 = nixpkgs.lib.nixosSystem {
@@ -75,7 +75,7 @@
             rootSSHKey = rootSSHKey;
           };
           modules = [
-            ./systems/utm/builder/config.nix
+            ./systems/utm/builder/config.nix inputs
           ];
         };
       };
